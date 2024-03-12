@@ -1,0 +1,235 @@
+digraph {
+graph [
+  rankdir=TB
+];
+node [
+  style=rounded,
+  shape=rectangle
+];
+edge [
+  arrowsize=1,
+  color=black,
+  fontsize=10,
+  fontcolor=gray45
+];
+
+4339515600 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(6)</TD></TR><HR/><TR><TD>return 8</TD></TR></TABLE>>
+];
+4339515632 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(5)</TD></TR><HR/><TR><TD>return 5</TD></TR></TABLE>>
+];
+4339515664 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(4)</TD></TR><HR/><TR><TD>return 3</TD></TR></TABLE>>
+];
+4339515696 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(3)</TD></TR><HR/><TR><TD>return 2</TD></TR></TABLE>>
+];
+4339515728 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(2)</TD></TR><HR/><TR><TD>return 1</TD></TR></TABLE>>
+];
+4339515760 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(1)</TD></TR><HR/><TR><TD>return 1</TD></TR></TABLE>>
+];
+4339515792 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(0)</TD></TR><HR/><TR><TD>return 0</TD></TR></TABLE>>
+];
+4339515824 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(1)</TD></TR><HR/><TR><TD>return 1</TD></TR></TABLE>>
+];
+4339515856 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(2)</TD></TR><HR/><TR><TD>return 1</TD></TR></TABLE>>
+];
+4339515888 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(1)</TD></TR><HR/><TR><TD>return 1</TD></TR></TABLE>>
+];
+4339515920 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(0)</TD></TR><HR/><TR><TD>return 0</TD></TR></TABLE>>
+];
+4339515952 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(3)</TD></TR><HR/><TR><TD>return 2</TD></TR></TABLE>>
+];
+4339515984 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(2)</TD></TR><HR/><TR><TD>return 1</TD></TR></TABLE>>
+];
+4339516016 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(1)</TD></TR><HR/><TR><TD>return 1</TD></TR></TABLE>>
+];
+4339516048 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(0)</TD></TR><HR/><TR><TD>return 0</TD></TR></TABLE>>
+];
+4339516080 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(1)</TD></TR><HR/><TR><TD>return 1</TD></TR></TABLE>>
+];
+4339516112 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(4)</TD></TR><HR/><TR><TD>return 3</TD></TR></TABLE>>
+];
+4339516144 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(3)</TD></TR><HR/><TR><TD>return 2</TD></TR></TABLE>>
+];
+4339516176 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(2)</TD></TR><HR/><TR><TD>return 1</TD></TR></TABLE>>
+];
+4339516208 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(1)</TD></TR><HR/><TR><TD>return 1</TD></TR></TABLE>>
+];
+4339516240 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(0)</TD></TR><HR/><TR><TD>return 0</TD></TR></TABLE>>
+];
+4339516272 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(1)</TD></TR><HR/><TR><TD>return 1</TD></TR></TABLE>>
+];
+4339516304 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(2)</TD></TR><HR/><TR><TD>return 1</TD></TR></TABLE>>
+];
+4339516336 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(1)</TD></TR><HR/><TR><TD>return 1</TD></TR></TABLE>>
+];
+4339516368 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fibonacci(0)</TD></TR><HR/><TR><TD>return 0</TD></TR></TABLE>>
+];
+4339515600 -> 4339515632 [
+  label="#1"
+];
+4339515632 -> 4339515664 [
+  label="#2"
+];
+4339515664 -> 4339515696 [
+  label="#3"
+];
+4339515696 -> 4339515728 [
+  label="#4"
+];
+4339515728 -> 4339515760 [
+  label="#5"
+];
+4339515760 -> 4339515728 [
+  label="#6"
+];
+4339515728 -> 4339515792 [
+  label="#7"
+];
+4339515792 -> 4339515728 [
+  label="#8"
+];
+4339515728 -> 4339515696 [
+  label="#9"
+];
+4339515696 -> 4339515824 [
+  label="#10"
+];
+4339515824 -> 4339515696 [
+  label="#11"
+];
+4339515696 -> 4339515664 [
+  label="#12"
+];
+4339515664 -> 4339515856 [
+  label="#13"
+];
+4339515856 -> 4339515888 [
+  label="#14"
+];
+4339515888 -> 4339515856 [
+  label="#15"
+];
+4339515856 -> 4339515920 [
+  label="#16"
+];
+4339515920 -> 4339515856 [
+  label="#17"
+];
+4339515856 -> 4339515664 [
+  label="#18"
+];
+4339515664 -> 4339515632 [
+  label="#19"
+];
+4339515632 -> 4339515952 [
+  label="#20"
+];
+4339515952 -> 4339515984 [
+  label="#21"
+];
+4339515984 -> 4339516016 [
+  label="#22"
+];
+4339516016 -> 4339515984 [
+  label="#23"
+];
+4339515984 -> 4339516048 [
+  label="#24"
+];
+4339516048 -> 4339515984 [
+  label="#25"
+];
+4339515984 -> 4339515952 [
+  label="#26"
+];
+4339515952 -> 4339516080 [
+  label="#27"
+];
+4339516080 -> 4339515952 [
+  label="#28"
+];
+4339515952 -> 4339515632 [
+  label="#29"
+];
+4339515632 -> 4339515600 [
+  label="#30"
+];
+4339515600 -> 4339516112 [
+  label="#31"
+];
+4339516112 -> 4339516144 [
+  label="#32"
+];
+4339516144 -> 4339516176 [
+  label="#33"
+];
+4339516176 -> 4339516208 [
+  label="#34"
+];
+4339516208 -> 4339516176 [
+  label="#35"
+];
+4339516176 -> 4339516240 [
+  label="#36"
+];
+4339516240 -> 4339516176 [
+  label="#37"
+];
+4339516176 -> 4339516144 [
+  label="#38"
+];
+4339516144 -> 4339516272 [
+  label="#39"
+];
+4339516272 -> 4339516144 [
+  label="#40"
+];
+4339516144 -> 4339516112 [
+  label="#41"
+];
+4339516112 -> 4339516304 [
+  label="#42"
+];
+4339516304 -> 4339516336 [
+  label="#43"
+];
+4339516336 -> 4339516304 [
+  label="#44"
+];
+4339516304 -> 4339516368 [
+  label="#45"
+];
+4339516368 -> 4339516304 [
+  label="#46"
+];
+4339516304 -> 4339516112 [
+  label="#47"
+];
+4339516112 -> 4339515600 [
+  label="#48"
+];
+}
