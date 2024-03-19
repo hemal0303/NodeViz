@@ -1,8 +1,7 @@
 # project/app/views.py
 from django.http import JsonResponse
 from django.shortcuts import render
-from treevizer import recursion_viz, recursion_to_png
-import treevizer
+from treevizer import to_png
 import os
 import traceback
 
@@ -13,9 +12,6 @@ png_data_dir = os.path.join(GENERATED_DATA_DIR, "png_files")
 
 
 def get_next_file_name(directory, base_name, extension):
-    """
-    Get the next available filename with the specified extension by incrementing a number suffix.
-    """
     counter = 1
     while True:
         filename = os.path.join(directory, f"{base_name}{counter}.{extension}")
@@ -24,38 +20,92 @@ def get_next_file_name(directory, base_name, extension):
         counter += 1
 
 
+import io
+import sys
+import traceback
+
+
+def execute_code(code, execution_globals, execution_locals):
+    """
+    Execute Python code and capture both printed output and the result of the last expression.
+    """
+    # Redirect stdout to capture printed output
+    stdout_capture = io.StringIO()
+    sys.stdout = stdout_capture
+
+    try:
+        exec(code, execution_globals, execution_locals)
+        printed_output = stdout_capture.getvalue()
+        return printed_output
+    except Exception as e:
+        traceback.print_exc()
+        return str(e)
+    finally:
+        # Restore stdout
+        sys.stdout = sys.__stdout__
+
+
+def visualize_linked_list(linked_list):
+    print("===>>>>>>", linked_list.__dict__)
+
+    dot_file = os.path.join(dot_data_dir, "linked_list.dot")
+    png_file = os.path.join(png_data_dir, "linked_list.png")
+    # to_png(dot_file, png_file)
+    to_png(linked_list, structure_type="ll", dot_path=dot_file, png_path=png_file)
+
+
 def home(request):
     if request.method == "POST":
         code = request.POST.get("code")
+        if not code:
+            return JsonResponse({"error": "Code is empty"}, status=400)
 
-        # Example: Secure code execution in a restricted environment
-        execution_globals = {}
-        execution_locals = {}
         try:
-            exec(code, execution_globals, execution_locals)
-            result = execution_locals.get("result")
-            if result is not None:
-                return JsonResponse({"result": result})
-            else:
-                return JsonResponse({"error": "Code did not produce a valid result"})
+            result = execute_code(code, {}, {})
+            print("result", result)
+            return JsonResponse({"result": result})
         except Exception as e:
-            # Log the exception for debugging and monitoring
-            traceback.print_exc()
             return JsonResponse({"error": str(e)}, status=400)
 
-    @treevizer.recursion_viz
-    def fibonacci(n):
-        if n <= 1:
-            return n
-        else:
-            return fibonacci(n - 1) + fibonacci(n - 2)
+    # Create a linked list and insert nodes
+    class Node:
+        def __init__(self, data=None):
+            self.data = data
+            self.next = None
 
-    fibonacci(6)  # Example: Calculate Fibonacci sequence for n=6
+    class LinkedList:
+        def __init__(self):
+            self.head = None
 
-    # Get the next available filenames for DOT and PNG files with extensions
-    dot_file = get_next_file_name(dot_data_dir, "dot", "dot")
-    png_file = get_next_file_name(png_data_dir, "png", "png")
+        def insert_at_end(self, data):
+            new_node = Node(data)
+            if self.head is None:
+                self.head = new_node
+                return
+            last_node = self.head
+            while last_node.next:
+                last_node = last_node.next
+            last_node.next = new_node
 
-    treevizer.recursion_to_png("fibonacci", dot_path=dot_file, png_path=png_file)
+        def print_ll(self):
+            current = self.head
+            while current:
+                print(current.data, end=" ")
+                current = current.next
+            print()
 
-    return render(request, "app/home.html")
+    # Create a linked list and insert nodes
+    linked_list = LinkedList()
+    linked_list.insert_at_end(1)
+    linked_list.insert_at_end(2)
+    linked_list.insert_at_end(3)
+    linked_list.insert_at_end(4)
+    linked_list.insert_at_end(5)
+
+    # Print the linked list
+    linked_list.print_ll()
+
+    # Visualize the linked list
+    visualize_linked_list(linked_list)
+
+    return render(request, "app/home2.html")

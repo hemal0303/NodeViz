@@ -1,61 +1,25 @@
-<!-- project/app/templates/app/home.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Python Code Execution</title>
-    <!-- Include necessary CSS and JavaScript libraries -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/python/python.min.js"></script>
+    <title>Embedded Python Code Editor</title>
 </head>
 <body>
-    <h1>Python Code Execution</h1>
-    
-    <div>
-        <!-- Code editor for Python code -->
-        <textarea id="code" name="code" rows="10" cols="50"></textarea>
-    </div>
-    
-    <div>
-        <!-- Button to execute Python code -->
-        <button id="execute-btn">Execute Code</button>
-    </div>
-
-    <div id="result">
-        <!-- Display the generated PNG image here -->
-        <img id="result-img" src="" alt="Visualization">
-    </div>
-
-    <script>
-        document.getElementById('execute-btn').addEventListener('click', function() {
-            // Get the Python code from the textarea
-            var code = document.getElementById('code').value;
-
-            // Make a POST request to execute the Python code
-            fetch('/', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}'  // Include CSRF token for Django POST requests
-                },
-                body: JSON.stringify({ code: code })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.result) {
-                    // Update the image source with the generated PNG path
-                    document.getElementById('result-img').src = data.png_path;
-                } else {
-                    alert('Code execution failed. Check the console for details.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Error occurred during code execution. Check the console for details.');
-            });
-        });
-    </script>
+    <h1>Embedded Python Code Editor</h1>
+    <iframe 
+        frameBorder="0" 
+        height="450px"
+        src="https://onecompiler.com/embed/python?codeChangeEvent=true"
+        width="100%"
+></iframe>
 </body>
+<script>
+    window.onmessage = function (e) {
+        if (e.data && e.data.language) {
+            var code_content = e.data.files[0]['content']
+            console.log("code_content", code_content);
+        }
+    };
+</script>
 </html>

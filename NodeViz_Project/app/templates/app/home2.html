@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Code Executor</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/python/python.min.js"></script>
+    <style>
+        /* Style for CodeMirror editor */
+        .CodeMirror {
+            border: 1px solid #ccc;
+            height: 300px; /* Adjust height as needed */
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Python Code Executor</h1>
+    <form id="codeForm">
+        {% csrf_token %} 
+        <label for="code">Enter Python code:</label><br>
+        <textarea id="code" name="code" rows="10" cols="50"></textarea><br>
+        <button type="submit">Execute Code</button>
+    </form>
+    <hr>
+    <h2>Execution Result:</h2>
+    <div id="result"></div>
+
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
+            mode: 'python',
+            lineNumbers: true
+        });
+
+        // Handle form submission
+        document.getElementById('codeForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var codeValue = editor.getValue().trim(); // Get code from CodeMirror editor
+            if (!codeValue) {
+                alert('Please enter Python code.');
+                return;
+            }
+
+            var formData = new FormData(this);
+            formData.set('code', codeValue); // Set the code in form data
+
+            fetch('', {  // Use current URL to send the POST request
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("data", data);
+                document.getElementById('result').innerHTML = data.result || data.error || 'No result!';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('result').innerHTML = 'An error occurred. Please try again.';
+            });
+        });
+    </script>
+</body>
+</html>
