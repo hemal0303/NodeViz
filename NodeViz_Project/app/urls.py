@@ -19,4 +19,11 @@ from . import views
 
 urlpatterns = [
     path("", views.home, name="home"),
+    path(
+        "get-binary-tree-impl/", views.get_binary_tree_impl, name="get_binary_tree_impl"
+    ),
+    path(
+        "get-linked-list-impl/", views.get_linked_list_impl, name="get_linked_list_impl"
+    ),
+    path("get-recursion-impl/", views.get_recursion_impl, name="get_recursion_impl"),
 ]

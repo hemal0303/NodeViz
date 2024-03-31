@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,10 +8,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.62.0/mode/python/python.min.js"></script>
     <style>
-        /* Style for CodeMirror editor */
         .CodeMirror {
             border: 1px solid #ccc;
-            height: 300px; /* Adjust height as needed */
+            height: 300px;
             font-size: 16px;
         }
     </style>
@@ -19,14 +18,28 @@
 <body>
     <h1>Python Code Executor</h1>
     <form id="codeForm">
-        {% csrf_token %} 
+        {% csrf_token %}
         <label for="code">Enter Python code:</label><br>
         <textarea id="code" name="code" rows="10" cols="50"></textarea><br>
+
+        <!-- Dropdown menu for data structure selection -->
+        <label for="dataStructure">Choose Data Structure:</label>
+        <select id="dataStructure" name="dataStructure" required>
+            <option value="" selected disabled>-------------</option>
+            <option value="BinaryTree">Binary Tree</option>
+            <option value="LinkedList">Linked List</option>
+            <option value="Recursion">Recursion</option>
+            <!-- Add more options for other data structures -->
+        </select><br><br>
+
         <button type="submit">Execute Code</button>
     </form>
+    <p id="result"></p>
     <hr>
-    <h2>Execution Result:</h2>
-    <div id="result"></div>
+    <pre id="implementationDisplay"></pre>
+    <p id="warningMessage" style="color: red; font-weight: bold;"></p>
+    <!-- <h2>Execution Result:</h2>
+    <div id="result"></div> -->
 
     <script>
         var editor = CodeMirror.fromTextArea(document.getElementById('code'), {
@@ -36,30 +49,86 @@
 
         // Handle form submission
         document.getElementById('codeForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            var codeValue = editor.getValue().trim(); // Get code from CodeMirror editor
-            if (!codeValue) {
-                alert('Please enter Python code.');
-                return;
+    event.preventDefault();
+    var codeValue = editor.getValue().trim(); // Get code from CodeMirror editor
+    var selectedStructure = document.getElementById('dataStructure').value;
+    console.log("selectedStructure", selectedStructure);
+    if (!codeValue) {
+        alert('Please enter Python code.');
+        return;
+    }
+    if (!selectedStructure) {
+        alert('Please select Data Structure from drop down.');
+        return;
+    }
+
+    var formData = new FormData(this);
+    formData.set('code', codeValue); // Set the code in form data
+    formData.set('ds', selectedStructure); // Set the selected data structure
+
+    fetch('', {  // Use current URL to send the POST request
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data.error) {
+            // Display the error message
+            document.getElementById('result').innerText = 'Error: ' + data.error;
+        } else {
+            // Display the result
+            document.getElementById('result').innerText = data.result || 'No result';
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        document.getElementById('result').innerText = 'An error occurred. Please try again.';
+    });
+});
+        
+        document.getElementById('dataStructure').addEventListener('change', function() {
+            var selectedStructure = this.value;
+            
+            if (selectedStructure === 'BinaryTree') {
+                endpointUrl = '/get-binary-tree-impl/';
+            } else if (selectedStructure === 'LinkedList') {
+                endpointUrl = '/get-linked-list-impl/';
+            } else if (selectedStructure === 'Recursion') {
+                endpointUrl = '/get-recursion-impl/';
             }
-
-            var formData = new FormData(this);
-            formData.set('code', codeValue); // Set the code in form data
-
-            fetch('', {  // Use current URL to send the POST request
-                method: 'POST',
-                body: formData,
-            })
+            
+            fetch(endpointUrl)
             .then(response => response.json())
             .then(data => {
-                console.log("data", data);
-                document.getElementById('result').innerHTML = data.result || data.error || 'No result!';
+                document.getElementById('implementationDisplay').innerText = data.implementation;
+                showWarningMessage(selectedStructure);
             })
             .catch(error => {
                 console.error('Error:', error);
-                document.getElementById('result').innerHTML = 'An error occurred. Please try again.';
+                document.getElementById('implementationDisplay').innerText = 'Error fetching implementation.';
             });
+
+            function showWarningMessage(structure) {
+            var warningMessage = document.getElementById('warningMessage');
+            if (structure === 'BinaryTree') {
+                warningMessage.innerText = "Note: Use the displayed BinaryTree implementation for correct visualization.";
+            } else if (structure === 'LinkedList') {
+                warningMessage.innerText = "Note: Use the displayed LinkedList implementation for correct visualization.";
+            } else if (structure === 'Recursion') {
+                warningMessage.innerText = "Note: Use the displayed Recursion implementation for correct visualization.";
+            } else {
+                warningMessage.innerText = "";
+            }
+        }
+
         });
+
     </script>
 </body>
 </html>
+

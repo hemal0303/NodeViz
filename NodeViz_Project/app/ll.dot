@@ -1,0 +1,32 @@
+digraph {
+graph [
+  rankdir=LR
+];
+node [
+  style=filled,
+  fillcolor=lightblue,
+  shape=circle,
+  fixedsize=true,
+  width=1
+];
+edge [
+  arrowsize=1,
+  color=black
+];
+
+4332421328 [
+  label="i=0\nv=5"
+];
+4332421360 [
+  label="i=1\nv=6"
+];
+4332421392 [
+  label="i=2\nv=4"
+];
+4332421328 -> 4332421360 [
+
+];
+4332421360 -> 4332421392 [
+
+];
+}

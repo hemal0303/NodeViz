@@ -13,8 +13,8 @@ edge [
   fontcolor=gray45
 ];
 
-4309975248 [
-  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>fun_to_visu()</TD></TR><HR/><TR><TD>return None</TD></TR></TABLE>>
+4373643472 [
+  label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="0"><TR><TD>test(1)</TD></TR><HR/><TR><TD>return 1</TD></TR></TABLE>>
 ];
 
 }
