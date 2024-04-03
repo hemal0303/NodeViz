@@ -2,6 +2,9 @@
 import treevizer
 from treevizer import recursion_viz, to_png
 
+import treevizer
+from treevizer import recursion_viz, to_png
+
 
 import treevizer
 from treevizer import recursion_viz, to_png
@@ -37,7 +40,6 @@ class Solution:
         return dummy_head.next
 
 
-# Helper function to print the linked list
 def print_linked_list(head):
     current = head
     while current:
@@ -46,7 +48,6 @@ def print_linked_list(head):
     print("None")
 
 
-# Creating first linked list: 2 -> 4 -> 3 (representing number 342)
 node9 = Node(9)
 node8 = Node(8, node9)
 node7 = Node(7, node8)
@@ -61,13 +62,10 @@ node1 = Node(1, node2)
 
 
 
-# Creating an instance of the Solution class
 sol = Solution()
 
-# Adding the two numbers represented by the linked lists
 result_head = sol.addTwoNumbers(node1, node6)
 
-# Printing the result linked list: 7 -> 0 -> 8 (representing number 807)
 print_linked_list(result_head)
 
 

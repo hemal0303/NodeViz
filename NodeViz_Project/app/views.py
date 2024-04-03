@@ -16,13 +16,13 @@ dot_data_dir = os.path.join(GENERATED_DATA_DIR, "dot_files")
 png_data_dir = os.path.join(GENERATED_DATA_DIR, "png_files")
 
 
-# def get_next_file_name(directory, base_name, extension):
-#     counter = 1
-#     while True:
-#         filename = os.path.join(directory, f"{base_name}{counter}.{extension}")
-#         if not os.path.exists(filename):
-#             return filename
-#         counter += 1
+def get_next_file_name(directory, base_name, extension):
+    counter = 1
+    while True:
+        filename = os.path.join(directory, f"{base_name}{counter}.{extension}")
+        if not os.path.exists(filename):
+            return filename
+        counter += 1
 
 
 def execute_code(code, execution_globals, execution_locals):
@@ -34,10 +34,8 @@ def execute_code(code, execution_globals, execution_locals):
     sys.stdout = stdout_capture
 
     try:
-        print("here")
         exec(code)
         printed_output = stdout_capture.getvalue()
-        print("printed_output", printed_output)
         return printed_output
     except Exception as e:
         traceback.print_exc()
@@ -103,114 +101,72 @@ def extract_function_name(code):
         return None
 
 
-# def home(request):
-#     try:
-#         if request.method == "POST":
-#             code = request.POST.get("code")
-#             if not code:
-#                 return JsonResponse({"error": "Code is empty"}, status=400)
-
-#             try:
-#                 fun_name = extract_function_name(code)
-#                 execute_code(code, {}, {})
-#                 dot_path = dot_data_dir + "/test.dot"
-#                 png_path = png_data_dir + "/test.png"
-
-#                 # treevizer.recursion_to_png(
-#                 #     fun_name, dot_path=dot_path, png_path=png_path
-#                 # )
-#                 to_png(
-#                     fun_name,
-#                     structure_type="ll",
-#                     dot_path=dot_path,
-#                     png_path=png_path,
-#                 )
-#                 return JsonResponse({"result": "Visualization generated successfully"})
-#             except Exception as e:
-#                 return JsonResponse({"error": str(e)}, status=400)
-
-#         return render(request, "app/home2.html")
-#     except Exception as e:
-#         print("Found an Error-->", e)
-
-
-# def home(request):
-#     try:
-#         if request.method == "POST":
-#             code = request.POST.get("code")
-#             if not code:
-#                 return JsonResponse({"error": "Code is empty"}, status=400)
-
-#             try:
-#                 fun_name = extract_function_name_and_decorate(code)
-#                 execute_code(code, {}, {})
-#                 dot_path = dot_data_dir + "/test.dot"
-#                 png_path = png_data_dir + "/test.png"
-
-#                 treevizer.recursion_to_png(
-#                     fun_name, dot_path=dot_path, png_path=png_path
-#                 )
-#                 return JsonResponse({"result": "Visualization generated successfully"})
-#             except Exception as e:
-#                 return JsonResponse({"error": str(e)}, status=400)
-
-#         return render(request, "app/home2.html")
-#     except Exception as e:
-#         print("Found an Error-->", e)
-
-
-# def extract_function_name_and_decorate(code):
-#     class RecursionVizTransformer(ast.NodeTransformer):
-#         def visit_FunctionDef(self, node):
-#             if "recursion_viz" not in [
-#                 decorator.id for decorator in node.decorator_list
-#             ]:
-#                 node.decorator_list.append(ast.Name(id="recursion_viz", ctx=ast.Load()))
-#             return node
-
-#     try:
-#         parsed_ast = ast.parse(code)
-#         transformer = RecursionVizTransformer()
-#         transformed_ast = transformer.visit(parsed_ast)
-
-#         for node in ast.walk(transformed_ast):
-#             if isinstance(node, ast.FunctionDef):
-#                 function_name = node.name
-#                 return function_name
-#                 # return function_name, node
-
-#         return None, None  # No function found in the code
-#     except SyntaxError:
-#         return None, None
-
-
-# views.py
-
+import os
+from django.http import HttpResponse
 from django.shortcuts import render
 import subprocess
-import os
 
+def get_next_script_name():
+    base_name = "user_script"
+    count = 0
+    while True:
+        if count != 0:
+            script_name = f"{base_name}{count}.py"
+        else:
+            script_name = f"{base_name}.py"    
+        if not os.path.exists(os.path.join("user_code", script_name)):
+            return script_name
+        count += 1
 
 def home(request):
     if request.method == "POST":
         user_code = request.POST.get("code")
 
-        # Prefix imports and create Python file content
+        if not os.path.exists("user_code"):
+            os.makedirs("user_code")
+
+        script_name = get_next_script_name()
+        file_path = os.path.join("user_code", script_name)
+
         file_content = f"""
 import treevizer
 from treevizer import recursion_viz, to_png
+import o
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+GENERATED_DATA_DIR = os.path.join(BASE_DIR, "app/generated_data/")
+dot_data_dir = os.path.join(GENERATED_DATA_DIR, "dot_files")
+png_data_dir = os.path.join(GENERATED_DATA_DIR, "png_files")
+
+
+def get_next_file_name(directory, base_name, extension):
+    counter = 1
+    while True:
+        filename = os.path.join(directory, f"{base_name}{counter}.{extension}")
+        if not os.path.exists(filename):
+            return filename
+        counter += 1
 
 {user_code}
         """
 
-        # Write code to a Python file
-        with open("user_code.py", "w") as f:
+        # Write code to the Python file
+        with open(file_path, "w") as f:
             f.write(file_content)
 
-        # Run the Python file using os.system
-        os.system("python user_code.py")
+        # Run the Python file using subprocess and capture output
+        try:
+            output = subprocess.check_output(["python", file_path], stderr=subprocess.STDOUT, universal_newlines=True)
+            print("output", output)
+            # Process output as needed
+            return HttpResponse(f"Script executed successfully with output: {output}")
+        except subprocess.CalledProcessError as e:
+            error_message = f"Script execution failed with error: {e.output}"
+            # Handle error message or return as needed
+            return HttpResponse(error_message)
 
         return HttpResponse("Script executed successfully.")
 
     return render(request, "app/home2.html")
+
+
