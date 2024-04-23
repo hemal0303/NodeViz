@@ -9,21 +9,26 @@ dot_data_dir = os.path.join(GENERATED_DATA_DIR, "dot_files")
 png_data_dir = os.path.join(GENERATED_DATA_DIR, "png_files")
 
 
-def get_next_file_name(directory, base_name):
+def get_next_file_location(directory, base_name, type):
     counter = 1
     while True:
-        concated = base_name + str(counter)
+        concated = base_name + str(counter) + type
         filename = os.path.join(directory, concated)
         if not os.path.exists(filename):
             return filename
         counter += 1
 
-dot_file_name = get_next_file_name(dot_data_dir, "dot_file")
-png_file_name = get_next_file_name(png_data_dir, "png_file")
+def get_next_file_name(directory, base_name, type):
+    counter = 1
+    while True:
+        concated = base_name + str(counter) + type
+        filename = os.path.join(directory, concated)
+        if not os.path.exists(filename):
+            return concated  # Return only the filename, not the full path
+        counter += 1        
 
-import treevizer
-from treevizer import recursion_viz, to_png
-
+dot_path = get_next_file_location(dot_data_dir, "dot_file", '.dot')
+png_path = get_next_file_location(png_data_dir, "png_file", '.png')
 
 class Node:
     def __init__(self, data=0, next=None):
@@ -92,7 +97,9 @@ print_linked_list(result_head)
 to_png(
     result_head,
     structure_type="ll",
-    dot_path=dot_file_name,
-    png_path=png_file_name,
+    dot_path=dot_path,
+    png_path=png_path,
 )
+file_name = get_next_file_name(png_data_dir, "png_file", '.png')
+print(file_name)
 

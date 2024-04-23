@@ -36,6 +36,11 @@ def fibonacci(n):
     return n
   else:
     return fibonacci(n-1) + fibonacci(n-2)
+  
+
+fibonacci(9)
+  
+treevizer.recursion_to_png("fibonacci", dot_path=dot_path, png_path=png_path)
 file_name = get_next_file_name(png_data_dir, "png_file", '.png')
 print(file_name)
 
